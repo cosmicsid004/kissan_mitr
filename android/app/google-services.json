@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "481115601896",
+    "project_id": "kissanmitr-dce9c",
+    "storage_bucket": "kissanmitr-dce9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481115601896:android:f18ae46bc74ba8bbe7c25d",
+        "android_client_info": {
+          "package_name": "com.example.kissan_mitr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481115601896-pa9t49kv6neejf0ohl9ck8oc15438f3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXb4UMnbm-N7TtBvmyh0DfTS2bJbEtT_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481115601896-pa9t49kv6neejf0ohl9ck8oc15438f3e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
