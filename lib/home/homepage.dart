@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/home/analyzer.dart';
+import 'package:kissan_mitr/home/hometab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     // Use Container directly, Scaffold inside Scaffold is not recommended
     homeTab(),
     Center(child: Text('Sensor Data')),
-    Center(child: Text('Analyzer')),
+    analyzer(),
     Center(child: Text('Weather')),
     Center(child: Text('Expert')),
   ];
@@ -43,6 +45,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(20),
           child: SizedBox(
             height: 80,
+            width: double.infinity,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               // Prevent shifting animation
@@ -79,23 +82,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class homeTab extends StatefulWidget {
-  const homeTab({super.key});
-
-  @override
-  State<homeTab> createState() => _homeTabState();
-}
-
-class _homeTabState extends State<homeTab> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAFFCA),
-      body: Center(child: Text("home tab")),
     );
   }
 }

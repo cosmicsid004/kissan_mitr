@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kissan_mitr/home/homepage.dart';
-import 'package:kissan_mitr/login/login_page.dart';
 
 void main() {
   runApp(const MyApp());
