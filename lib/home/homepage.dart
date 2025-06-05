@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kissan_mitr/home/analyzer.dart';
 import 'package:kissan_mitr/home/hometab.dart';
 import 'package:kissan_mitr/home/chat_page.dart';
+import 'package:kissan_mitr/home/weatherPage/pages/weather_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     homeTab(),
     Center(child: Text('Sensor Data')),
     analyzer(),
-    Center(child: Text('Weather')),
+    WeatherPage(),
     ChatPage(),
   ];
 

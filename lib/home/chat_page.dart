@@ -18,7 +18,7 @@ class _ChatPageState extends State<ChatPage> {
     await FirebaseFirestore.instance.collection('messages').add({
       'text': text,
       'createdAt': FieldValue.serverTimestamp(),
-      'sender': 'User',
+      'sender': 'Ram',
     });
     _controller.clear();
     setState(() {});
@@ -30,7 +30,40 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: const Color(0xFFFAFFCA),
       appBar: AppBar(
         title: Row(
-          children: [Icon(Icons.person), SizedBox(width: 15,), Text("Expert Chat")],
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 15),
+            Text("Expert Chat"),
+            const Spacer(),
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance.collection('status').doc('expertOnline').snapshots(),
+              builder: (context, snapshot) {
+                bool online = false;
+                if (snapshot.hasData && snapshot.data!.data() != null) {
+                  final data = snapshot.data!.data() as Map<String, dynamic>;
+                  online = data['online'] == true;
+                }
+                return Row(
+                  children: [
+                    Icon(
+                      online ? Icons.circle : Icons.circle_outlined,
+                      color: online ? Colors.green.shade800 : Colors.red,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      online ? 'Online' : 'Offline',
+                      style: TextStyle(
+                        color: online ? Colors.green.shade800 : Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
         backgroundColor: const Color(0xFF84AE92),
       ),
