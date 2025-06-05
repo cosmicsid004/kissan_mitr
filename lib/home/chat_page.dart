@@ -29,7 +29,9 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFAFFCA),
       appBar: AppBar(
-        title: const Text('Expert Chat'),
+        title: Row(
+          children: [Icon(Icons.person), SizedBox(width: 15,), Text("Expert Chat")],
+        ),
         backgroundColor: const Color(0xFF84AE92),
       ),
       body: Column(
