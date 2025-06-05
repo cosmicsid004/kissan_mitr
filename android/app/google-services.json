@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "481115601896",
-    "project_id": "kissanmitr-dce9c",
-    "storage_bucket": "kissanmitr-dce9c.firebasestorage.app"
+    "project_number": "1092122527053",
+    "project_id": "kissan-mitr-efee8",
+    "storage_bucket": "kissan-mitr-efee8.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:481115601896:android:f18ae46bc74ba8bbe7c25d",
+        "mobilesdk_app_id": "1:1092122527053:android:83a20b9afc7572b18ce304",
         "android_client_info": {
-          "package_name": "com.example.kissan_mitr"
+          "package_name": "com.cadcoders.kissanmitr"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "481115601896-pa9t49kv6neejf0ohl9ck8oc15438f3e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCXb4UMnbm-N7TtBvmyh0DfTS2bJbEtT_g"
+          "current_key": "AIzaSyDHGeyustDOA84a-lZRTeSw2d1BYPJbncI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "481115601896-pa9t49kv6neejf0ohl9ck8oc15438f3e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
