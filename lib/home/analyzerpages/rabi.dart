@@ -30,8 +30,8 @@ class _rabiPageState extends State<rabiPage> {
 
   loadmodel() async {
     await Tflite.loadModel(
-      model: "assets/model_unquant.tflite",
-      labels: "assets/labels.txt",
+      model: "assets/tfFiles/wheat_and_potato/model_unquant.tflite",
+      labels: "assets/tfFiles/wheat_and_potato/labels.txt",
     );
   }
 

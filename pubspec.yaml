@@ -69,6 +69,12 @@ flutter:
     - assets/analyzerIcon/wheat-icon.png
     - assets/analyzerIcon/paddy.png
     - assets/analyzerIcon/sugarcane.png
+    - assets/tfFiles/rice_and_corn/model_unquant.tflite
+    - assets/tfFiles/rice_and_corn/labels.txt
+    - assets/tfFiles/sugarcane/model_unquant.tflite
+    - assets/tfFiles/sugarcane/labels.txt
+    - assets/tfFiles/wheat_and_potato/model_unquant.tflite
+    - assets/tfFiles/wheat_and_potato/labels.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

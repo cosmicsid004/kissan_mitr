@@ -13,9 +13,23 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
-    project.evaluationDependsOn(":app")
+    afterEvaluate {
+        if (plugins.hasPlugin("com.android.application") || plugins.hasPlugin("com.android.library")) {
+            extensions.configure<com.android.build.gradle.BaseExtension>("android") {
+                compileSdkVersion(34)
+            }
+        }
+    }
+
+    buildDir = File(rootProject.buildDir, name)
+    evaluationDependsOn(":app")
 }
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
+}
+configurations.all {
+    resolutionStrategy {
+        force("androidx.core:core-ktx:1.6.0")
+    }
 }

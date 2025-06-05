@@ -30,8 +30,8 @@ class _kharifPageState extends State<kharifPage> {
 
   loadmodel() async {
     await Tflite.loadModel(
-      model: "assets/model_unquant.tflite",
-      labels: "assets/labels.txt",
+      model: "assets/tfFiles/rice_and_corn/model_unquant.tflite",
+      labels: "assets/tfFiles/rice_and_corn/labels.txt",
     );
   }
 
