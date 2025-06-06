@@ -3,6 +3,7 @@ import 'package:kissan_mitr/home/analyzer.dart';
 import 'package:kissan_mitr/home/hometab.dart';
 import 'package:kissan_mitr/home/chat_page.dart';
 import 'package:kissan_mitr/home/sensorPage/sensorReadings.dart';
+import 'package:kissan_mitr/weatherPage/pages/weather_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     homeTab(),
     SenorReadings(),
     analyzer(),
-    Center(child: Text("Weather")),
+    WeatherPage(),
     ChatPage(),
   ];
 
