@@ -66,47 +66,16 @@ class _zaidPageState extends State<zaidPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Image Picker"), backgroundColor: Colors.grey,),
+      backgroundColor: const Color(0xFFFAFFCA),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MaterialButton(
-                  color: Colors.blueAccent,
-                  child: const Text(
-                    "Pick image from Gallery",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16
-                    ),
-                  ),
-                  onPressed: () {
-                    _pickImageFromGallery();
-                  },
-                ),
 
-                const SizedBox(width: 20,),
-
-                MaterialButton(
-                  color: Colors.redAccent,
-                  child: const Text(
-                    "Click image from Camera",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16
-                    ),
-                  ),
-                  onPressed: () {
-                    _clickImageFromCamera();
-                  },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SizedBox(child: _selectedImage != null ? Image.file(_selectedImage!) : Text(""), height: 800, width: 500,),
             ),
-            const SizedBox(height: 20,),
-            SizedBox(child: _selectedImage != null ? Image.file(_selectedImage!) : Text("Please select an image"), height: 800, width: 500,),
-            const SizedBox(height: 20,),
             Text("The image is of a ${label.toString().substring(2)}",
               style:TextStyle(
                   fontSize: 25
@@ -116,7 +85,54 @@ class _zaidPageState extends State<zaidPage> {
               style: TextStyle(
                   fontSize: 20
               ),
-            )
+            ),
+
+            const SizedBox(height: 20,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFB9D4AA),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: MaterialButton(
+                    child: const Text(
+                      "Pick image from Gallery",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16
+                      ),
+                    ),
+                    onPressed: () {
+                      _pickImageFromGallery();
+                    },
+                  ),
+                ),
+
+                const SizedBox(width: 20,),
+
+                Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFB9D4AA),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: MaterialButton(
+                    child: const Text(
+                      "Click image from Camera",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16
+                      ),
+                    ),
+                    onPressed: () {
+                      _clickImageFromCamera();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

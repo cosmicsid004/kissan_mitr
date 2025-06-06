@@ -76,10 +76,7 @@ flutter:
     - assets/tfFiles/sugarcane/labels.txt
     - assets/tfFiles/wheat_and_potato/model_unquant.tflite
     - assets/tfFiles/wheat_and_potato/labels.txt
-    - assets/weatherIcons/cloudy.json
-    - assets/weatherIcons/rainy.json
-    - assets/weatherIcons/sunny.json
-    - assets/weatherIcons/Thunder.json
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

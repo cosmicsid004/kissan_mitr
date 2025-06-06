@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kissan_mitr/home/analyzer.dart';
 import 'package:kissan_mitr/home/hometab.dart';
 import 'package:kissan_mitr/home/chat_page.dart';
-import 'package:kissan_mitr/home/weatherPage/pages/weather_page.dart';
+import 'package:kissan_mitr/home/sensorPage/sensorReadings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // Use Container directly, Scaffold inside Scaffold is not recommended
     homeTab(),
-    Center(child: Text('Sensor Data')),
+    SenorReadings(),
     analyzer(),
-    WeatherPage(),
+    Center(child: Text("Weather")),
     ChatPage(),
   ];
 
