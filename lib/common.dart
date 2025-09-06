@@ -6,14 +6,14 @@ class colors {
   }
 
   static dockColor() {
-    return Color(0xFFB9D4AA);
-  }
-
-  static cardColor() {
     return Color(0xFF84AE92);
   }
 
-  static buttonColor() {
+  static cardColor() {
     return Color(0xFFB9D4AA);
+  }
+
+  static buttonColor() {
+    return Color(0xFF84AE92);
   }
 }

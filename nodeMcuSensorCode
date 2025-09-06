@@ -1,0 +1,33 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+
+const char* ssid = "YOUR_WIFI";
+const char* password = "YOUR_PASSWORD";
+
+ESP8266WebServer server(80);
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Connected! IP: ");
+  Serial.println(WiFi.localIP());
+
+  server.on("/sensor", []() {
+    float temperature = 28.5;  // replace with real sensor reading
+    float humidity = 65.0;     // replace with real sensor reading
+    String json = "{\"temperature\": " + String(temperature) + ", \"humidity\": " + String(humidity) + "}";
+    server.send(200, "application/json", json);
+  });
+
+  server.begin();
+}
+
+void loop() {
+  server.handleClient();
+}
+

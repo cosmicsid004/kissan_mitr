@@ -12,15 +12,17 @@ class SenorReadings extends StatefulWidget {
 }
 
 class _SenorReadingsState extends State<SenorReadings> {
-  String sensorData = "Fetching...";
+  String soilMoisture = "Fetching...";
+  String soilPh = "Fetching...";
   Timer? timer;
 
   Future<void> fetchSensorData() async {
     await Future.delayed(const Duration(milliseconds: 500)); // simulate delay
     final random = Random();
+
     setState(() {
-      sensorData =
-          "🌡 Soil Moisture: \n${20 + random.nextInt(10)}°C";
+      soilMoisture = "${30 + random.nextInt(20)}%"; // e.g. 30–50% range
+      soilPh = "${5 + random.nextDouble() * 3.0}"; // e.g. 5.0–8.0 range
     });
   }
 
@@ -40,7 +42,8 @@ class _SenorReadingsState extends State<SenorReadings> {
     super.dispose();
   }
 
-  bool isOn = false; // state for toggle
+  bool pumpIsOn = false; // state for toggle
+  bool phManager = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,142 +62,173 @@ class _SenorReadingsState extends State<SenorReadings> {
               ),
 
               Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  height: 250,
-                  decoration: BoxDecoration(
-                    color: colors.cardColor(),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Image.asset(
-                            'assets/sensorPage/sprinkler.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        const SizedBox(width: 80),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 500),
-                                transitionBuilder: (child, anim) =>
-                                    FadeTransition(opacity: anim, child: child),
-                                child: Text(
-                                  sensorData,
-                                  key: ValueKey(sensorData), // required for AnimatedSwitcher
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                padding: const EdgeInsets.all(16.0), // reduced a bit for small screens
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double cardHeight = constraints.maxHeight > 0
+                        ? constraints.maxHeight * 0.35
+                        : MediaQuery.of(context).size.height * 0.25;
+
+                    final double imageFlex = constraints.maxWidth > 600 ? 3 : 2;
+                    final double textSize = MediaQuery.of(context).size.width * 0.045;
+                    final double subtitleSize = MediaQuery.of(context).size.width * 0.04;
+
+                    return Container(
+                      height: cardHeight.clamp(180, 280), // min 180, max 280
+                      decoration: BoxDecoration(
+                        color: colors.cardColor(),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: imageFlex.toInt(),
+                              child: Image.asset(
+                                'assets/sensorPage/sprinkler.png',
+                                fit: BoxFit.contain,
                               ),
-                              const SizedBox(height: 10),
-                              Row(
+                            ),
+                            const SizedBox(width: 20), // dynamic spacing (reduced from 80)
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    isOn ? "Sprinkler: ON" : "Sprinkler: OFF",
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                  AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 500),
+                                    transitionBuilder: (child, anim) =>
+                                        FadeTransition(opacity: anim, child: child),
+                                    child: Text(
+                                      "🌡 Soil Moisture: $soilMoisture",
+                                      key: ValueKey(soilMoisture), // important for AnimatedSwitcher
+                                      style: TextStyle(
+                                        fontSize: textSize.clamp(18, 24), // scale with screen
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Switch(
-                                    value: isOn,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isOn = value;
-                                        // TODO: send command to NodeMCU when real device is ready
-                                      });
-                                    },
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          pumpIsOn ? "Sprinkler: ON" : "Sprinkler: OFF",
+                                          style: TextStyle(
+                                            fontSize: subtitleSize.clamp(16, 20),
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Switch(
+                                        value: pumpIsOn,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            pumpIsOn = value;
+                                            // TODO: send command to NodeMCU when real device is ready
+                                          });
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
 
               Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  height: 250,
-                  decoration: BoxDecoration(
-                    color: colors.cardColor(),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Image.asset(
-                            'assets/sensorPage/ph.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        const SizedBox(width: 80),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 500),
-                                transitionBuilder: (child, anim) =>
-                                    FadeTransition(opacity: anim, child: child),
-                                child: Text(
-                                  sensorData,
-                                  key: ValueKey(sensorData), // required for AnimatedSwitcher
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                padding: const EdgeInsets.all(16.0), // reduced a bit for small screens
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double cardHeight = constraints.maxHeight > 0
+                        ? constraints.maxHeight * 0.35
+                        : MediaQuery.of(context).size.height * 0.25;
+
+                    final double imageFlex = constraints.maxWidth > 600 ? 3 : 2;
+                    final double textSize = MediaQuery.of(context).size.width * 0.045;
+                    final double subtitleSize = MediaQuery.of(context).size.width * 0.04;
+
+                    return Container(
+                      height: cardHeight.clamp(180, 280), // min 180, max 280
+                      decoration: BoxDecoration(
+                        color: colors.cardColor(),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: imageFlex.toInt(),
+                              child: Image.asset(
+                                'assets/sensorPage/ph.png',
+                                fit: BoxFit.contain,
                               ),
-                              const SizedBox(height: 10),
-                              Row(
+                            ),
+                            const SizedBox(width: 20), // dynamic spacing (reduced from 80)
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    isOn ? "Sprinkler: ON" : "Sprinkler: OFF",
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                  AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 500),
+                                    transitionBuilder: (child, anim) =>
+                                        FadeTransition(opacity: anim, child: child),
+                                    child: Text(
+                                      "🌡 Soil pH: $soilPh",
+                                      key: ValueKey(soilPh), // important for AnimatedSwitcher
+                                      style: TextStyle(
+                                        fontSize: textSize.clamp(18, 24), // scale with screen
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Switch(
-                                    value: isOn,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isOn = value;
-                                        // TODO: send command to NodeMCU when real device is ready
-                                      });
-                                    },
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          phManager ? "Sprinkler: ON" : "Sprinkler: OFF",
+                                          style: TextStyle(
+                                            fontSize: subtitleSize.clamp(16, 20),
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Switch(
+                                        value: phManager,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            phManager = value;
+                                            // TODO: send command to NodeMCU when real device is ready
+                                          });
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               )
+
             ],
           ),
         ),

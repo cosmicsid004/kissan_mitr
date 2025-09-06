@@ -15,10 +15,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
 
-  // Use const constructors where possible for better performance
   static final List<Widget> _widgetOptions = <Widget>[
-    // Use Container directly, Scaffold inside Scaffold is not recommended
     homeTab(),
     SenorReadings(),
     analyzer(),
@@ -27,6 +26,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _onItemTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
     setState(() {
       _selectedIndex = index;
     });
@@ -34,9 +38,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double navBarHeight = MediaQuery.of(context).size.height * 0.1;
+    // ~10% of screen height (auto scales on small/large devices)
+
     return Scaffold(
       backgroundColor: const Color(0xFFFAFFCA),
-      body: _widgetOptions[_selectedIndex],
+      body: PageView(
+        controller: _pageController,
+        children: _widgetOptions,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.red,
@@ -44,37 +59,22 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.crisis_alert),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(12.0), // reduced padding for smaller screens
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: SizedBox(
-            height: 80,
+            height: navBarHeight.clamp(60, 90),
+            // Keeps min 60 and max 90 (safe across all devices)
             width: double.infinity,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              // Prevent shifting animation
               backgroundColor: colors.dockColor(),
               items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined, color: Colors.black),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.sensors_rounded, color: Colors.black),
-                  label: 'Sensor Data',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.camera_alt_outlined, color: Colors.black),
-                  label: 'Analyzer',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.sunny_snowing, color: Colors.black),
-                  label: 'Weather',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person, color: Colors.black),
-                  label: 'Expert',
-                ),
+                BottomNavigationBarItem(icon: Icon(Icons.home_outlined, color: Colors.black), label: 'Home'),
+                BottomNavigationBarItem(icon: Icon(Icons.sensors_rounded, color: Colors.black), label: 'Sensor Data'),
+                BottomNavigationBarItem(icon: Icon(Icons.camera_alt_outlined, color: Colors.black), label: 'Analyzer'),
+                BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing, color: Colors.black), label: 'Weather'),
+                BottomNavigationBarItem(icon: Icon(Icons.person, color: Colors.black), label: 'Expert'),
               ],
               currentIndex: _selectedIndex,
               selectedItemColor: Colors.black,
