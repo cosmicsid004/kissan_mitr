@@ -22,7 +22,7 @@ class _SenorReadingsState extends State<SenorReadings> {
 
     setState(() {
       soilMoisture = "${30 + random.nextInt(20)}%"; // e.g. 30–50% range
-      soilPh = "${5 + random.nextDouble() * 3.0}"; // e.g. 5.0–8.0 range
+      soilPh = (5 + random.nextDouble() * 3.0).toStringAsFixed(2);// e.g. 5.0–8.0 range
     });
   }
 
@@ -199,7 +199,7 @@ class _SenorReadingsState extends State<SenorReadings> {
                                     children: [
                                       Flexible(
                                         child: Text(
-                                          phManager ? "Sprinkler: ON" : "Sprinkler: OFF",
+                                          phManager ? "pH Manager: ON" : "pH Manager: OFF",
                                           style: TextStyle(
                                             fontSize: subtitleSize.clamp(16, 20),
                                           ),
