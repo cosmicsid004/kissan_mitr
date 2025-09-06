@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/common.dart';
 import 'package:lottie/lottie.dart';
 
 class homeTab extends StatefulWidget {
@@ -12,7 +13,7 @@ class _homeTabState extends State<homeTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFFCA),
+      backgroundColor: colors.backgroundColor(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -30,7 +31,7 @@ class _homeTabState extends State<homeTab> {
                 child: Container(
                   height: 350,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF84AE92),
+                    color: colors.cardColor(),
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                   child: Center(

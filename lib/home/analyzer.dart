@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/common.dart';
 import 'package:kissan_mitr/home/analyzerpages/kharif.dart';
 import 'package:kissan_mitr/home/analyzerpages/rabi.dart';
 import 'package:kissan_mitr/home/analyzerpages/zaid.dart';
@@ -15,7 +16,7 @@ class _analyzerState extends State<analyzer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFFCA),
+      backgroundColor: colors.backgroundColor(),
       
       body: SafeArea(
         child: SingleChildScrollView(
@@ -44,7 +45,7 @@ class _analyzerState extends State<analyzer> {
                   child: Container(
                     height: 200,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF84AE92),
+                      color: colors.cardColor(),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Center(
@@ -59,7 +60,7 @@ class _analyzerState extends State<analyzer> {
                           Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Container(
-                              decoration: BoxDecoration(color: const Color(0xFFB9D4AA), borderRadius: BorderRadius.all(Radius.circular(20))),
+                              decoration: BoxDecoration(color: colors.buttonColor(), borderRadius: BorderRadius.all(Radius.circular(20))),
                               width: double.infinity,
                               child: Center(
                                 child: Text(
@@ -92,7 +93,7 @@ class _analyzerState extends State<analyzer> {
                   child: Container(
                     height: 200,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF84AE92),
+                      color: colors.cardColor(),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Center(
@@ -107,7 +108,7 @@ class _analyzerState extends State<analyzer> {
                             Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Container(
-                                decoration: BoxDecoration(color: const Color(0xFFB9D4AA), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                decoration: BoxDecoration(color: colors.buttonColor(), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 width: double.infinity,
                                 child: Center(
                                   child: Text(
@@ -139,7 +140,7 @@ class _analyzerState extends State<analyzer> {
                   child: Container(
                     height: 200,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF84AE92),
+                      color: colors.cardColor(),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Center(
@@ -154,7 +155,7 @@ class _analyzerState extends State<analyzer> {
                             Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Container(
-                                decoration: BoxDecoration(color: const Color(0xFFB9D4AA), borderRadius: BorderRadius.all(Radius.circular(20))),
+                                decoration: BoxDecoration(color: colors.buttonColor(), borderRadius: BorderRadius.all(Radius.circular(20))),
                                 width: double.infinity,
                                 child: Center(
                                   child: Text(

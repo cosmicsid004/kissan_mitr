@@ -1,8 +1,8 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/common.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async'; // Import for Timer
 
 class SenorReadings extends StatefulWidget {
   const SenorReadings({super.key});
@@ -12,63 +12,39 @@ class SenorReadings extends StatefulWidget {
 }
 
 class _SenorReadingsState extends State<SenorReadings> {
-  Map<String, dynamic>? sensorData;
-  String errorMessage = '';
-  final String nodeMcuIP = 'http://10.10.173.113'; // Replace with your NodeMCU IP
-  Timer? _timer;
+  String sensorData = "Fetching...";
+  Timer? timer;
 
-  @override
-  void initState() {
-    super.initState();
-    fetchSensorData(); // Initial fetch
-    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      fetchSensorData(); // Fetch every 0.5 seconds
+  Future<void> fetchSensorData() async {
+    await Future.delayed(const Duration(milliseconds: 500)); // simulate delay
+    final random = Random();
+    setState(() {
+      sensorData =
+          "🌡 Soil Moisture: \n${20 + random.nextInt(10)}°C";
     });
   }
 
   @override
-  void dispose() {
-    _timer?.cancel(); // Stop the timer when widget is disposed
-    super.dispose();
-  }
-
-  Future<void> fetchSensorData() async {
-    try {
-      final response = await http.get(Uri.parse(nodeMcuIP));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        setState(() {
-          sensorData = data;
-          errorMessage = '';
-        });
-      } else {
-        setState(() {
-          errorMessage = 'Failed to get data: ${response.statusCode}';
-          sensorData = null;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        errorMessage = 'Error fetching data: $e';
-        sensorData = null;
-      });
-    }
-  }
-
-  Widget _buildSensorValue(String label, dynamic value, [String unit = '']) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Text(
-        '$label: $value $unit',
-        style: const TextStyle(fontSize: 18, color: Colors.white),
-      ),
+  void initState() {
+    super.initState();
+    fetchSensorData(); // first fetch
+    timer = Timer.periodic(
+      const Duration(seconds: 3),
+      (t) => fetchSensorData(),
     );
   }
 
   @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  bool isOn = false; // state for toggle
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFFCA),
+      backgroundColor: colors.backgroundColor(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -81,60 +57,144 @@ class _SenorReadingsState extends State<SenorReadings> {
                 alignment: Alignment.topCenter,
                 child: Lottie.asset('assets/homeIcon/homeicon.json'),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Container(
-                  height: 350,
+                  height: 250,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF84AE92),
+                    color: colors.cardColor(),
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                   ),
-                  child: Center(
-                    child: Container(
-                      height: 300,
-                      width: 250,
-                      color: Colors.pink,
-                      padding: const EdgeInsets.all(16),
-                      child: errorMessage.isNotEmpty
-                          ? Text(
-                        errorMessage,
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 18),
-                      )
-                          : sensorData == null
-                          ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                          : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildSensorValue('Soil Moisture',
-                              sensorData!['soil_moisture']),
-                          _buildSensorValue('Temperature',
-                              sensorData!['temperature'], '°C'),
-                          _buildSensorValue(
-                              'Humidity', sensorData!['humidity'], '%'),
-                          _buildSensorValue('Heat Index',
-                              sensorData!['heat_index'], '°C'),
-                          _buildSensorValue('Air Quality Index',
-                              sensorData!['air_quality_index']),
-                          const SizedBox(height: 20),
-                          // ElevatedButton.icon(
-                          //   onPressed: fetchSensorData,
-                          //   icon: const Icon(Icons.refresh),
-                          //   label: const Text('Refresh'),
-                          //   style: ElevatedButton.styleFrom(
-                          //     backgroundColor: Colors.white,
-                          //     foregroundColor: Colors.pink,
-                          //   ),
-                          // ),
-                        ],
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Image.asset(
+                            'assets/sensorPage/sprinkler.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        const SizedBox(width: 80),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 500),
+                                transitionBuilder: (child, anim) =>
+                                    FadeTransition(opacity: anim, child: child),
+                                child: Text(
+                                  sensorData,
+                                  key: ValueKey(sensorData), // required for AnimatedSwitcher
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(
+                                    isOn ? "Sprinkler: ON" : "Sprinkler: OFF",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Switch(
+                                    value: isOn,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isOn = value;
+                                        // TODO: send command to NodeMCU when real device is ready
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: colors.cardColor(),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Image.asset(
+                            'assets/sensorPage/ph.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        const SizedBox(width: 80),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 500),
+                                transitionBuilder: (child, anim) =>
+                                    FadeTransition(opacity: anim, child: child),
+                                child: Text(
+                                  sensorData,
+                                  key: ValueKey(sensorData), // required for AnimatedSwitcher
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(
+                                    isOn ? "Sprinkler: ON" : "Sprinkler: OFF",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Switch(
+                                    value: isOn,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isOn = value;
+                                        // TODO: send command to NodeMCU when real device is ready
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -142,3 +202,38 @@ class _SenorReadingsState extends State<SenorReadings> {
     );
   }
 }
+
+//with sensor
+/*
+
+  Future<void> fetchSensorData() async {
+    try {
+      // Replace with your NodeMCU IP
+      final response = await http.get(Uri.parse("http://192.168.1.50/sensor"));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          sensorData = "🌡 Temp: ${data['temperature']}°C\n💧 Humidity: ${data['humidity']}%";
+        });
+      } else {
+        setState(() {
+          sensorData = "Error: ${response.statusCode}";
+        });
+      }
+    } catch (e) {
+      setState(() {
+        sensorData = "Failed to connect 😞";
+      });
+    }
+  }
+ */
+
+/*
+sensorData,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+ */

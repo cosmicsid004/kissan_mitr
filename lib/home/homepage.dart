@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/common.dart';
 import 'package:kissan_mitr/home/analyzer.dart';
 import 'package:kissan_mitr/home/hometab.dart';
 import 'package:kissan_mitr/home/chat_page.dart';
 import 'package:kissan_mitr/home/sensorPage/sensorReadings.dart';
+import 'package:kissan_mitr/weatherPage/pages/weather_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     homeTab(),
     SenorReadings(),
     analyzer(),
-    Center(child: Text("Weather")),
+    WeatherPage(),
     ChatPage(),
   ];
 
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               // Prevent shifting animation
-              backgroundColor: const Color(0xFFB9D4AA),
+              backgroundColor: colors.dockColor(),
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined, color: Colors.black),
