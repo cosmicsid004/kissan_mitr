@@ -14,6 +14,23 @@ class _WeatherPageState extends State<WeatherPage> {
   late Future<WeatherModel> currentWeather;
   late Future<ForecastWeatherModel> forecastWeather;
 
+  String formatDate(String date) {
+    try {
+      DateTime dt = DateTime.parse(date);
+      return "${dt.day} ${_monthName(dt.month)}";
+    } catch (e) {
+      return date;
+    }
+  }
+
+  String _monthName(int month) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    return months[month - 1];
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,12 +78,31 @@ class _WeatherPageState extends State<WeatherPage> {
                       SizedBox(height: 50),
                       Text('Greater Noida', style: TextStyle(fontSize: 22)),
                       Lottie.asset(animationPath, height: 150),
-                      Text('Temp: ${weather.temperature}°C', style: TextStyle(fontSize: 18)),
-                      Text('Humidity: ${weather.humidity}%', style: TextStyle(fontSize: 18)),
-                      Text('Wind Speed: ${weather.windSpeed} m/s', style: TextStyle(fontSize: 18)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Temp🌡: ${weather.temperature}°C  ',
+                              style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Humidity💧: ${weather.humidity}%',
+                              style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Wind🌬: ${weather.windSpeed}m/s',
+                              style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
                       SizedBox(height: 20),
                     ],
                   );
+
                 }
               },
             ),
@@ -93,21 +129,48 @@ class _WeatherPageState extends State<WeatherPage> {
 
   Widget _buildForecast(ForecastWeatherModel forecast) {
     return ListView.builder(
-      itemCount: forecast.dailyAverages.length,
+      itemCount: forecast.dailyData.length,
       itemBuilder: (context, index) {
-        String date = forecast.dailyAverages.keys.elementAt(index);
-        double avgTemp = forecast.dailyAverages[date]!;
+        String date = forecast.dailyData.keys.elementAt(index);
+        DailyWeather dayData = forecast.dailyData[date]!;
+
+        final animationPath = getWeatherAnimation("clear");
+        // TODO: replace with actual `condition` if added in DailyWeather
 
         return Card(
           color: colors.cardColor(),
-          child: ListTile(
-            title: Text(date),
-            subtitle: Text('Temp: ${avgTemp.toStringAsFixed(1)}°C'),
-            trailing: Icon(Icons.thermostat),
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                // Left Side: Text Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        formatDate(date), // ✅ formatted as 8 Sep
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(height: 8),
+                      Text("Temp🌡: ${dayData.temp.toStringAsFixed(1)}°C ",
+                          style: TextStyle(fontSize: 15)),
+                      Text("Humidity💧: ${dayData.humidity}% ",
+                          style: TextStyle(fontSize: 15)),
+                      Text("Wind🌬: ${dayData.windSpeed.toStringAsFixed(1)} m/s ",
+                          style: TextStyle(fontSize: 15)),
+                    ],
+                  ),
+                ),
+                // Right Side: Animation
+                Lottie.asset(animationPath, height: 60, width: 60),
+              ],
+            ),
           ),
         );
       },
     );
   }
 }
-
