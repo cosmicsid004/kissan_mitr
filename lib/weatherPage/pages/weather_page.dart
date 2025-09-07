@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kissan_mitr/common.dart';
 import 'package:lottie/lottie.dart';
 import '../services/weather_services.dart';
 import '../models/weather_model.dart';
@@ -38,7 +39,7 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAFFCA),
+      backgroundColor: colors.backgroundColor(),
 
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -98,7 +99,7 @@ class _WeatherPageState extends State<WeatherPage> {
         double avgTemp = forecast.dailyAverages[date]!;
 
         return Card(
-          color: const Color(0xFF84AE92),
+          color: colors.cardColor(),
           child: ListTile(
             title: Text(date),
             subtitle: Text('Temp: ${avgTemp.toStringAsFixed(1)}°C'),

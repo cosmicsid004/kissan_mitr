@@ -78,6 +78,11 @@ flutter:
     - assets/tfFiles/wheat_and_potato/labels.txt
     - assets/sensorPage/ph.png
     - assets/sensorPage/sprinkler.png
+    - assets/weatherIcon/cloudy.json
+    - assets/weatherIcon/rainy.json
+    - assets/weatherIcon/sunny.json
+    - assets/weatherIcon/Thunder.json
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
